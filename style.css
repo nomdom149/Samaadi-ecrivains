@@ -123,6 +123,10 @@ body {
 .enluminure-corner.tr { top: 20px; right: 20px; transform: rotate(90deg); }
 .enluminure-corner.bl { bottom: 20px; left: 20px; transform: rotate(270deg); }
 .enluminure-corner.br { bottom: 20px; right: 20px; transform: rotate(180deg); }
+.enluminure-plume {
+  display: block; width: 48px; height: 48px;
+  margin: 0 auto 24px; opacity: 0.75;
+}
 
 /* ─── SECTIONS ─── */
 section { padding: 80px 24px; }
