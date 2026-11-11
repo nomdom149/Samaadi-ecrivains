@@ -3,6 +3,71 @@
    style.css · novembre 2026
    ═══════════════════════════════════════════════════════════ */
 
+/* ─── POLICES LOCALES (aucun téléchargement externe) ─── */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/playfair-display-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/playfair-display-latin-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/playfair-display-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/playfair-display-latin-600-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('fonts/playfair-display-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('fonts/inter-latin-300-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/inter-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/inter-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/inter-latin-600-normal.woff2') format('woff2');
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -549,4 +614,9 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); letter-spacing: 0.5px
   .transfo-col { padding: 24px 0; }
   .tension-grid { grid-template-columns: 1fr; }
   .tension-photo { aspect-ratio: 4/3; }
+  .tension-photo--voyage { object-position: top center; }
+  .promise .container,
+  .lieu .container,
+  .lieu .container-wide,
+  .cta-section .container { padding-left: 36px; padding-right: 36px; }
 }
