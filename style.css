@@ -541,8 +541,12 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); letter-spacing: 0.5px
 /* ─── RESPONSIVE GÉNÉRAL ─── */
 @media (max-width: 600px) {
   section { padding: 56px 0; }
+  .container, .container-wide { padding-left: 20px; padding-right: 20px; }
   .steps::before { left: 20px; }
   .step { grid-template-columns: 44px 1fr; gap: 18px; }
   .step-num { width: 44px; height: 44px; font-size: 18px; }
   .transfo-cols { grid-template-columns: 1fr; }
+  .transfo-col { padding: 24px 0; }
+  .tension-grid { grid-template-columns: 1fr; }
+  .tension-photo { aspect-ratio: 4/3; }
 }
