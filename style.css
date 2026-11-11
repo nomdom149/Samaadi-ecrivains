@@ -125,7 +125,7 @@ body {
 .enluminure-corner.br { bottom: 20px; right: 20px; transform: rotate(180deg); }
 .enluminure-plume {
   display: block; width: 48px; height: 48px;
-  margin: 0 auto 24px; opacity: 0.75;
+  margin: 0 0 24px; opacity: 0.75;
 }
 
 /* ─── SECTIONS ─── */
