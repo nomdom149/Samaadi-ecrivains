@@ -129,7 +129,7 @@ body {
 }
 
 /* ─── SECTIONS ─── */
-section { padding: 80px 24px; }
+section { padding: 80px 0; }
 .container { max-width: 860px; margin: 0 auto; }
 .container-wide { max-width: 1080px; margin: 0 auto; }
 .section-tag {
@@ -540,7 +540,7 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); letter-spacing: 0.5px
 
 /* ─── RESPONSIVE GÉNÉRAL ─── */
 @media (max-width: 600px) {
-  section { padding: 56px 20px; }
+  section { padding: 56px 0; }
   .steps::before { left: 20px; }
   .step { grid-template-columns: 44px 1fr; gap: 18px; }
   .step-num { width: 44px; height: 44px; font-size: 18px; }
