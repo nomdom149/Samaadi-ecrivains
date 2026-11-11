@@ -520,7 +520,7 @@ section { padding: 80px 24px; }
   display: inline-block; background: var(--amber); color: #fff;
   font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
   letter-spacing: 1.5px; text-transform: uppercase; padding: 18px 48px;
-  border-radius: 3px; text-decoration: none; transition: background 0.25s, transform 0.2s;
+  border-radius: 10px; text-decoration: none; transition: background 0.25s, transform 0.2s;
 }
 .cta-btn:hover { background: var(--chene-warm); transform: translateY(-2px); }
 .cta-btn.disabled { opacity: 0.55; pointer-events: none; }
