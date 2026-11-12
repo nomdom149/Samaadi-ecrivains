@@ -287,7 +287,6 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
 
   // ── Champs personnalisés Systeme.io ──
   const customFields = [
-    { slug: 'profil',        value: PROFIL_LABELS[data.profil] || data.profil },
     { slug: 'expertise',     value: data.expertise },
     { slug: 'projet-livre',  value: data.projet },
     { slug: 'avancement',    value: AVANCEMENT_LABELS[data.avancement] || data.avancement },
@@ -300,6 +299,7 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
     const payload = {
       email:       data.email,
       firstName:   data.prenom,
+      profil:      PROFIL_LABELS[data.profil] || data.profil,
       fields:      customFields,
       tagIds:      [parseInt(SYSTEME_IO_TAG_ID)],
       campaignIds: [1232061],
