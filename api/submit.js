@@ -76,13 +76,23 @@ export default async function handler(req, res) {
       console.log('[submit] Contact créé:', contactId);
     }
 
-    // 2. Ajouter les tags
+    // 2. Ajouter les tags et vérifier l'acceptation par Systeme.io
     for (const tagId of tagIds) {
-      await fetch('https://api.systeme.io/api/contacts/' + contactId + '/tags', {
+      const tagRes = await fetch('https://api.systeme.io/api/contacts/' + contactId + '/tags', {
         method: 'POST',
         headers: sysioHeaders,
         body: JSON.stringify({ tagId }),
       });
+      if (!tagRes.ok) {
+        const detail = await tagRes.text();
+        console.error('[submit] Tag assignment failed', {
+          status: tagRes.status,
+          tagId,
+          response: detail.slice(0, 1000),
+        });
+        return res.status(502).json({ error: 'Tag assignment failed', upstreamStatus: tagRes.status });
+      }
+      console.log('[submit] Tag assignment accepted', { tagId, status: tagRes.status });
     }
 
     // 3. Systeme.io automation subscribes the contact when the tag is added.
