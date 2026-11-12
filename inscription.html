@@ -431,8 +431,7 @@
 </footer>
 
 <script>
-// ── CONFIG ── Remplacer par la vraie clé API Systeme.io après propagation DNS
-const SYSTEME_IO_API_KEY = '89uxn6aht81rgqvrae0rkmynduiqiu2fnof5y38gt5uwwb7dytq4d616frmjdqeq'; // Ex. : ''
+// ── CONFIG ──
 const SYSTEME_IO_TAG_ID  = '2285193';  // ID du tag "Liste attente Samaâdi" dans Systeme.io
 
 document.getElementById('samaadi-form').addEventListener('submit', async function(e) {
@@ -469,34 +468,31 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
   btn.textContent = 'Envoi en cours…';
   btn.disabled = true;
 
-  // ── 1. Systeme.io API (si clé configurée) ──────────────────
-  if (SYSTEME_IO_API_KEY) {
-    try {
-      const payload = {
-        email: data.email,
-        firstName: data.prenom,
-        tagIds: [parseInt(SYSTEME_IO_TAG_ID)],
-        campaignIds: [1232061],
-        fields: [
-          { slug: 'profil',     value: data.profil },
-          { slug: 'expertise',  value: data.expertise },
-          { slug: 'projet',     value: data.projet },
-          { slug: 'avancement', value: data.avancement },
-          { slug: 'pourquoi',   value: data.pourquoi },
-          { slug: 'linkedin',   value: data.linkedin },
-        ]
-      };
-      await fetch('https://api.systeme.io/api/contacts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': SYSTEME_IO_API_KEY,
-        },
-        body: JSON.stringify(payload),
-      });
-    } catch (err) {
-      console.warn('Systeme.io:', err);
-    }
+  // ── 1. Systeme.io via proxy serverless (évite CORS) ──────────
+  try {
+    const payload = {
+      email: data.email,
+      firstName: data.prenom,
+      tagIds: [parseInt(SYSTEME_IO_TAG_ID)],
+      campaignIds: [1232061],
+      fields: [
+        { slug: 'profil',     value: data.profil },
+        { slug: 'expertise',  value: data.expertise },
+        { slug: 'projet',     value: data.projet },
+        { slug: 'avancement', value: data.avancement },
+        { slug: 'pourquoi',   value: data.pourquoi },
+        { slug: 'linkedin',   value: data.linkedin },
+      ]
+    };
+    await fetch('/api/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.warn('Systeme.io:', err);
   }
 
   // ── 2. Afficher la confirmation ────────────────────────────
