@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   const { tagIds = [], campaignIds = [], firstName, fields = [], profil = '', ...rest } = req.body;
   const contactPayload = {
     ...rest,
-    ...(firstName ? { first_name: firstName } : {}),
+    ...(firstName ? { firstName } : {}),
     ...(fields.length > 0 ? { fields } : {}),
   };
 
@@ -74,6 +74,27 @@ export default async function handler(req, res) {
       }
       contactId = createData.id;
       console.log('[submit] Contact créé:', contactId);
+    }
+
+    // Diagnostic sans données personnelles : vérifier la persistance du prénom.
+    if (firstName && contactId) {
+      try {
+        const verifyRes = await fetch('https://api.systeme.io/api/contacts/' + contactId, {
+          headers: sysioHeaders,
+        });
+        if (verifyRes.ok) {
+          const verified = await verifyRes.json();
+          console.log('[submit] First name verification', {
+            status: verifyRes.status,
+            hasFirstName: Boolean(verified.firstName || verified.first_name),
+            availableNameKeys: Object.keys(verified).filter(k => /name/i.test(k)),
+          });
+        } else {
+          console.warn('[submit] First name verification unavailable', { status: verifyRes.status });
+        }
+      } catch (verificationError) {
+        console.warn('[submit] First name verification request failed');
+      }
     }
 
     // 2. Ajouter les tags et vérifier l'acceptation par Systeme.io
