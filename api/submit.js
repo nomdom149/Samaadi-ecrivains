@@ -85,13 +85,26 @@ export default async function handler(req, res) {
       });
     }
 
-    // 3. Ajouter aux campagnes email
+    // 3. Ajouter aux campagnes email et contrôler la réponse de Systeme.io
     for (const campaignId of campaignIds) {
-      await fetch('https://api.systeme.io/api/contacts/' + contactId + '/email_marketing_campaigns', {
+      const campaignRes = await fetch('https://api.systeme.io/api/contacts/' + contactId + '/email_marketing_campaigns', {
         method: 'POST',
         headers: sysioHeaders,
         body: JSON.stringify({ campaignId }),
       });
+      if (!campaignRes.ok) {
+        const detail = await campaignRes.text();
+        console.error('[submit] Campaign enrollment failed', {
+          status: campaignRes.status,
+          campaignId,
+          response: detail.slice(0, 1200),
+        });
+        return res.status(502).json({
+          error: 'Campaign enrollment failed',
+          upstreamStatus: campaignRes.status,
+        });
+      }
+      console.log('[submit] Campaign enrollment accepted', { campaignId, status: campaignRes.status });
     }
 
     // 4. Notification email via SMTP OVH
