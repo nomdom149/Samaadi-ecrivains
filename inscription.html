@@ -287,6 +287,7 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
 
   // ── Champs personnalisés Systeme.io ──
   const customFields = [
+    { slug: 'profil', value: PROFIL_LABELS[data.profil] || data.profil },
     { slug: 'expertise',     value: data.expertise },
     { slug: 'projetlivre',  value: data.projet },
     { slug: 'avancement',    value: AVANCEMENT_LABELS[data.avancement] || data.avancement },
@@ -317,6 +318,8 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
   } catch (err) {
     console.error('Systeme.io:', err);
     alert("Une erreur s'est produite lors de l'envoi. Veuillez réessayer ou nous contacter directement.");
+    btn.disabled = false;
+    btn.textContent = "Rejoindre la liste d'intérêt";
     return;
   }
 
