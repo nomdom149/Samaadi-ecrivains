@@ -143,6 +143,7 @@ export default async function handler(req, res) {
       await transporter.sendMail({
         from: '"Samaâdi" <' + EMAIL_USER + '>',
         to: 'cocon@samaadi.be',
+        cc: 'claudine.defeuillet@gmail.com',
         subject: '✦ Nouvelle inscription Samaâdi — ' + (firstName || '') + ' (' + contactPayload.email + ')',
         html: html,
       }).catch(function(err) { console.warn('Email OVH error:', err.message); });
