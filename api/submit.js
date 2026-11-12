@@ -73,7 +73,7 @@ export default async function handler(req, res) {
         ['Email', contactPayload.email],
         ['Profil', profil || '—'],
         ['Expertise', fieldMap['expertise'] || '—'],
-        ['Projet de livre', fieldMap['projet-livre'] || '—'],
+        ['Projet de livre', fieldMap['projetlivre'] || '—'],
         ["Stade d'avancement", fieldMap['avancement'] || '—'],
         ['Motivation', fieldMap['motivation'] || '—'],
         ['LinkedIn', fieldMap['linkedin'] || '—'],
