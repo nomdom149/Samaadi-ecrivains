@@ -34,6 +34,7 @@ export default async function handler(req, res) {
     const createData = await createRes.json();
 
     if (!createRes.ok) {
+      console.error('Systeme.io create error:', JSON.stringify(createData));
       return res.status(createRes.status).json({ error: 'Systeme.io create failed', detail: createData });
     }
     contactId = createData.id;
