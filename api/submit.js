@@ -71,24 +71,25 @@ export default async function handler(req, res) {
         ['LinkedIn', fieldMap['linkedin'] || '—'],
       ];
 
+      const tdStyle1 = 'padding:8px 12px;font-weight:600;color:#2a1a08;border-bottom:1px solid #f0e8d4;';
+      const tdStyle2 = 'padding:8px 12px;color:#4a3a28;border-bottom:1px solid #f0e8d4;';
       const tableRows = rows.map(([label, value]) =>
-        `<tr><td style="padding:8px 12px;font-weight:600;color:#2a1a08;border-bottom:1px solid #f0e8d4;">${label}</td>` +
-        `<td style="padding:8px 12px;color:#4a3a28;border-bottom:1px solid #f0e8d4;">${value}</td></tr>`
+        `<tr><td style="${tdStyle1}">${label}</td><td style="${tdStyle2}">${value}</td></tr>`
       ).join('');
 
-      const html = `<!DOCTYPE html><html><body style="font-family:sans-serif;background:#faf7f0;padding:24px;">` +
-        `<div style="max-width:580px;margin:0 auto;background:#fff;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">` +
-        `<div style="background:#2a1a08;padding:24px 32px;"><p style="margin:0;color:#c9a24a;font-size:11px;letter-spacing:.2em;text-transform:uppercase;">Samaâdi · Nouvelle inscription</p></div>` +
-        `<div style="padding:24px 32px;"><table style="width:100%;border-collapse:collapse;">${tableRows}</table>` +
-        `<p style="margin-top:16px;font-size:11px;color:#9e8a6e;">Systeme.io ID : ${contactId || 'inconnu'}</p></div>` +
-        `</div></body></html>`;
+      const html = '<!DOCTYPE html><html><body style="font-family:sans-serif;background:#faf7f0;padding:24px;">'
+        + `<div style="max-width:580px;margin:0 auto;background:#fff;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">`
+        + `<div style="background:#2a1a08;padding:24px 32px;"><p style="margin:0;color:#c9a24a;font-size:11px;letter-spacing:.2em;text-transform:uppercase;">Samaâdi · Nouvelle inscription</p></div>`
+        + `<div style="padding:24px 32px;"><table style="width:100%;border-collapse:collapse;">${tableRows}</table>`
+        + `<p style="margin-top:16px;font-size:11px;color:#9e8a6e;">Systeme.io ID : ${contactId || 'inconnu'}</p></div>`
+        + '</div></body></html>';
 
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
         body: JSON.stringify({
-          from: 'Samaâdi <notification@samadi.be>',
-          to: ['cocon@samadi.be'],
+          from: 'Samaâdi <notification@samaadi.be>',
+          to: ['cocon@samaadi.be'],
           subject: `\u2726 Nouvelle inscription Samaâdi — ${firstName || ''} (${contactPayload.email})`,
           html,
         }),
