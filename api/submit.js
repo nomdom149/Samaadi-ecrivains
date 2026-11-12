@@ -8,26 +8,67 @@ export default async function handler(req, res) {
   const API_KEY = process.env.SYSTEME_IO_API_KEY;
   if (!API_KEY) { return res.status(500).json({ error: 'Server configuration error' }); }
 
-  try {
-    const response = await fetch('https://api.systeme.io/api/contacts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
-      body: JSON.stringify(req.body),
-    });
-    const data = await response.json().catch(() => ({}));
+  const sysioHeaders = { 'Content-Type': 'application/json', 'X-API-Key': API_KEY };
 
-    // Si l'email existe deja => contact deja dans le systeme => on renvoie 200
-    if (response.status === 422) {
-      const violations = data.violations || [];
+  // Extract tagIds + campaignIds separately (Systeme.io ignores them during creation)
+  const { tagIds = [], campaignIds = [], ...contactPayload } = req.body;
+
+  try {
+    // ── Étape 1 : créer le contact ──
+    const createResp = await fetch('https://api.systeme.io/api/contacts', {
+      method: 'POST',
+      headers: sysioHeaders,
+      body: JSON.stringify(contactPayload),
+    });
+    const createData = await createResp.json().catch(() => ({}));
+
+    let contactId = createData.id || null;
+
+    // Doublon d'email : contact déjà présent → on récupère son ID pour tagger
+    if (createResp.status === 422) {
+      const violations = createData.violations || [];
       const onlyEmailDup = violations.length > 0 && violations.every(
         v => v.propertyPath === 'email' && (v.message || '').includes('utilis')
       );
       if (onlyEmailDup) {
-        return res.status(200).json({ success: true, note: 'Contact already exists' });
+        try {
+          const searchResp = await fetch(
+            `https://api.systeme.io/api/contacts?email=${encodeURIComponent(contactPayload.email)}`,
+            { headers: sysioHeaders }
+          );
+          const searchData = await searchResp.json().catch(() => ({}));
+          contactId = searchData?.items?.[0]?.id || null;
+        } catch (_) {}
+      } else {
+        return res.status(422).json(createData);
+      }
+    } else if (createResp.status !== 201) {
+      return res.status(createResp.status).json(createData);
+    }
+
+    // ── Étape 2 : attacher les tags (appel séparé obligatoire) ──
+    if (contactId && tagIds.length > 0) {
+      for (const tagId of tagIds) {
+        await fetch(`https://api.systeme.io/api/contacts/${contactId}/tags`, {
+          method: 'POST',
+          headers: sysioHeaders,
+          body: JSON.stringify({ tagId }),
+        }).catch(() => {});
       }
     }
 
-    return res.status(response.status).json(data);
+    // ── Étape 3 : inscrire aux campagnes (appel séparé obligatoire) ──
+    if (contactId && campaignIds.length > 0) {
+      for (const campaignId of campaignIds) {
+        await fetch(`https://api.systeme.io/api/campaigns/${campaignId}/contacts`, {
+          method: 'POST',
+          headers: sysioHeaders,
+          body: JSON.stringify({ contactId }),
+        }).catch(() => {});
+      }
+    }
+
+    return res.status(200).json({ success: true, id: contactId });
   } catch (error) {
     return res.status(500).json({ error: 'API call failed', detail: error.message });
   }
