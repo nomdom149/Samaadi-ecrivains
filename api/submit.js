@@ -19,7 +19,11 @@ export default async function handler(req, res) {
   const contactPayload = {
     ...rest,
     ...(firstName ? { firstName } : {}),
-    ...(fields.length > 0 ? { fields } : {}),
+    // Systeme.io stores name values in contact fields (slug first_name).
+    fields: [
+      ...fields.filter(f => f.slug !== 'first_name'),
+      ...(firstName ? [{ slug: 'first_name', value: firstName }] : []),
+    ],
   };
 
   let contactId = null;
