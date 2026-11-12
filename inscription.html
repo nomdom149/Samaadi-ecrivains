@@ -470,19 +470,20 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
 
   // ── 1. Systeme.io via proxy serverless (évite CORS) ──────────
   try {
+    const allFields = [
+      { slug: 'profil',     value: data.profil },
+      { slug: 'expertise',  value: data.expertise },
+      { slug: 'projet',     value: data.projet },
+      { slug: 'avancement', value: data.avancement },
+      { slug: 'pourquoi',   value: data.pourquoi },
+      { slug: 'linkedin',   value: data.linkedin },
+    ];
     const payload = {
       email: data.email,
       firstName: data.prenom,
       tagIds: [parseInt(SYSTEME_IO_TAG_ID)],
       campaignIds: [1232061],
-      fields: [
-        { slug: 'profil',     value: data.profil },
-        { slug: 'expertise',  value: data.expertise },
-        { slug: 'projet',     value: data.projet },
-        { slug: 'avancement', value: data.avancement },
-        { slug: 'pourquoi',   value: data.pourquoi },
-        { slug: 'linkedin',   value: data.linkedin },
-      ]
+      fields: allFields.filter(f => f.value && f.value.trim() !== ''),
     };
     await fetch('/api/submit', {
       method: 'POST',
