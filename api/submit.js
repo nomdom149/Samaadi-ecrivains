@@ -25,45 +25,54 @@ export default async function handler(req, res) {
   let contactId = null;
 
   try {
-    const createRes = await fetch('https://api.systeme.io/api/contacts', {
-      method: 'POST',
+    // 1. Chercher si le contact existe déjà
+    const searchRes = await fetch('https://api.systeme.io/api/contacts?email=' + encodeURIComponent(contactPayload.email), {
       headers: sysioHeaders,
-      body: JSON.stringify(contactPayload),
     });
-    const createData = await createRes.json();
+    const searchData = await searchRes.json();
 
-    if (!createRes.ok) {
-      // Si l'email existe déjà, on cherche et met à jour le contact existant
-      const isAlreadyUsed = JSON.stringify(createData).includes('déjà utilisée') || JSON.stringify(createData).includes('already used');
-      if (createRes.status === 422 && isAlreadyUsed) {
-        const searchRes = await fetch('https://api.systeme.io/api/contacts?email=' + encodeURIComponent(contactPayload.email), {
-          headers: sysioHeaders,
-        });
-        if (searchRes.ok) {
-          const searchData = await searchRes.json();
-          if (searchData.items && searchData.items.length > 0) {
-            const existingId = searchData.items[0].id;
-            const patchRes = await fetch('https://api.systeme.io/api/contacts/' + existingId, {
-              method: 'PATCH',
-              headers: sysioHeaders,
-              body: JSON.stringify(contactPayload),
-            });
-            if (patchRes.ok) {
-              const patchData = await patchRes.json();
-              contactId = existingId;
-            }
-          }
-        }
+    if (searchRes.ok && searchData.items && searchData.items.length > 0) {
+      // Contact existant → PATCH (sans email dans le body pour éviter la contrainte d'unicité)
+      const existingId = searchData.items[0].id;
+      console.log('[submit] Contact existant trouvé, mise à jour:', existingId);
+
+      const { email: _email, ...patchPayload } = contactPayload;
+
+      const patchRes = await fetch('https://api.systeme.io/api/contacts/' + existingId, {
+        method: 'PATCH',
+        headers: sysioHeaders,
+        body: JSON.stringify(patchPayload),
+      });
+
+      if (patchRes.ok) {
+        contactId = existingId;
+        console.log('[submit] Contact mis à jour:', contactId);
+      } else {
+        const patchData = await patchRes.json();
+        console.error('[submit] Erreur PATCH', patchRes.status, JSON.stringify(patchData));
+        return res.status(patchRes.status).json({ error: 'Systeme.io update failed', detail: patchData });
       }
-      if (!contactId) {
-        console.error('[submit] Systeme.io error', createRes.status, JSON.stringify(createData));
-        console.error('[submit] Payload sent:', JSON.stringify(contactPayload));
+
+    } else {
+      // Nouveau contact → POST
+      console.log('[submit] Création nouveau contact');
+      const createRes = await fetch('https://api.systeme.io/api/contacts', {
+        method: 'POST',
+        headers: sysioHeaders,
+        body: JSON.stringify(contactPayload),
+      });
+      const createData = await createRes.json();
+
+      if (!createRes.ok) {
+        console.error('[submit] Erreur POST', createRes.status, JSON.stringify(createData));
+        console.error('[submit] Payload:', JSON.stringify(contactPayload));
         return res.status(createRes.status).json({ error: 'Systeme.io create failed', detail: createData });
       }
-    } else {
       contactId = createData.id;
+      console.log('[submit] Contact créé:', contactId);
     }
 
+    // 2. Ajouter les tags
     for (const tagId of tagIds) {
       await fetch('https://api.systeme.io/api/contacts/' + contactId + '/tags', {
         method: 'POST',
@@ -72,6 +81,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // 3. Ajouter aux campagnes email
     for (const campaignId of campaignIds) {
       await fetch('https://api.systeme.io/api/contacts/' + contactId + '/email_marketing_campaigns', {
         method: 'POST',
@@ -80,6 +90,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // 4. Notification email via SMTP OVH
     const EMAIL_USER = process.env.EMAIL_USER;
     const EMAIL_PASS = process.env.EMAIL_PASS;
     if (EMAIL_USER && EMAIL_PASS && contactPayload.email) {
@@ -128,6 +139,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true, id: contactId });
 
   } catch (error) {
+    console.error('[submit] Exception:', error.message);
     return res.status(500).json({ error: 'API call failed', detail: error.message });
   }
 }
