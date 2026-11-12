@@ -475,6 +475,8 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
       const payload = {
         email: data.email,
         firstName: data.prenom,
+        tagIds: [parseInt(SYSTEME_IO_TAG_ID)],
+        campaignIds: [1232061],
         fields: [
           { slug: 'profil',     value: data.profil },
           { slug: 'expertise',  value: data.expertise },
