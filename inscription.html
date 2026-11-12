@@ -3,436 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rejoindre la liste d'intérêt — Samaâdi</title>
+<title>Rejoindre la liste d’intérêt — Samaâdi</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --dark:        #150f07;
-    --dark-brown:  #2a1a08;
-    --gold:        #c9a24a;
-    --gold-light:  #e0bc72;
-    --cream:       #f5f0e6;
-    --text-cream:  #e8dfc9;
-    --text-muted:  #9e8a6e;
-  }
+:root {
+--dark: #150f07;
+--dark-brown: #2a1a08;
+--gold: #c9a24a;
+--gold-light: #e0bc72;
+--cream: #f5f0e6;
+--text-cream: #e8dfc9;
+--text-muted: #9e8a6e;
+}
 
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Jost', sans-serif;
-    background: var(--dark);
-    color: var(--text-cream);
-    min-height: 100vh;
-  }
+html { scroll-behavior: smooth; }
+body {
+font-family: 'Jost', sans-serif;
+background: var(--dark);
+color: var(--text-cream);
+min-height: 100vh;
+}
 
-  /* ── NAV ── */
-  .nav {
-    padding: 24px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(201,162,74,0.1);
-  }
-  .nav-back {
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: color 0.3s;
-  }
-  .nav-back:hover { color: var(--gold); }
-  .nav-back::before { content: '←'; font-size: 14px; }
-  .nav-logo {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 18px;
-    color: var(--gold-light);
-    text-decoration: none;
-  }
+.nav { padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(201,162,74,0.1); }
+.nav-back { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
+.nav-back:hover { color: var(--gold); }
+.nav-back::before { content: '←'; font-size: 14px; }
+.nav-logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--gold-light); text-decoration: none; }
 
-  /* ── HERO ── */
-  .hero {
-    padding: 60px 24px 48px;
-    text-align: center;
-    position: relative;
-    background: radial-gradient(ellipse at 60% 30%, rgba(90,45,10,0.3) 0%, transparent 65%),
-                var(--dark);
-  }
-  .eyebrow {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
-    font-weight: 400;
-    line-height: 1.15;
-    color: var(--cream);
-    max-width: 640px;
-    margin: 0 auto 12px;
-  }
-  .hero h1 em { font-style: italic; color: var(--gold-light); }
-  .divider {
-    width: 36px; height: 1px;
-    background: var(--gold);
-    margin: 20px auto;
-    opacity: 0.6;
-  }
-  .hero-sub {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: var(--text-cream);
-    max-width: 480px;
-    margin: 0 auto;
-    opacity: 0.8;
-    line-height: 1.65;
-  }
+.hero { padding: 60px 24px 48px; text-align: center; position: relative; background: radial-gradient(ellipse at 60% 30%, rgba(90,45,10,0.3) 0%, transparent 65%), var(--dark); }
+.eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 24px; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 400; line-height: 1.15; color: var(--cream); max-width: 640px; margin: 0 auto 12px; }
+.hero h1 em { font-style: italic; color: var(--gold-light); }
+.divider { width: 36px; height: 1px; background: var(--gold); margin: 20px auto; opacity: 0.6; }
+.hero-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-cream); max-width: 480px; margin: 0 auto; opacity: 0.8; line-height: 1.65; }
 
-  /* ── FORM SECTION ── */
-  .form-section {
-    background: var(--dark-brown);
-    padding: 60px 24px 80px;
-    position: relative;
-  }
-  .form-section::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0.25;
-  }
-
-  .form-container {
-    max-width: 660px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 16px;
-  }
-  .form-heading {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-weight: 400;
-    color: var(--cream);
-    margin-bottom: 10px;
-  }
-  .form-heading em { font-style: italic; color: var(--gold-light); }
-  .form-intro {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.7;
-    margin-bottom: 40px;
-    max-width: 520px;
-  }
-
-  .field-group { margin-bottom: 24px; }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
-
-  label {
-    display: block;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 9px;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  select,
-  textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(201,162,74,0.22);
-    border-radius: 2px;
-    padding: 13px 16px;
-    font-family: 'Jost', sans-serif;
-    font-size: 14px;
-    color: var(--cream);
-    transition: border-color 0.3s, background 0.3s;
-    outline: none;
-    appearance: none;
-  }
-  input::placeholder, textarea::placeholder {
-    color: rgba(232,223,201,0.28);
-    font-style: italic;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--gold);
-    background: rgba(201,162,74,0.05);
-  }
-  select {
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23c9a24a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 40px;
-  }
-  select option { background: var(--dark-brown); color: var(--cream); }
-  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-  .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 7px; font-style: italic; }
-
-  .form-separator {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,162,74,0.15), transparent);
-    margin: 30px 0;
-  }
-
-  .step-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 24px;
-  }
-  .step-label::before {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 1px;
-    background: var(--gold);
-    opacity: 0.5;
-  }
-
-  .btn-submit {
-    display: inline-block;
-    width: 100%;
-    padding: 17px 32px;
-    background: transparent;
-    border: 1px solid var(--gold);
-    border-radius: 2px;
-    font-family: 'Jost', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--gold-light);
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s, transform 0.2s;
-    margin-top: 10px;
-  }
-  .btn-submit:hover { background: var(--gold); color: var(--dark); transform: translateY(-1px); }
-  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  .form-note {
-    text-align: center;
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 16px;
-    letter-spacing: 0.05em;
-  }
-
-  /* ── CONFIRMATION ── */
-  #confirmation { display: none; text-align: center; padding: 48px 0; }
-  .confirm-star {
-    font-size: 32px;
-    display: block;
-    margin-bottom: 28px;
-    opacity: 0.7;
-  }
-  .confirm-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-weight: 400;
-    color: var(--cream);
-    margin-bottom: 14px;
-    line-height: 1.25;
-  }
-  .confirm-title em { font-style: italic; color: var(--gold-light); }
-  .confirm-text {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.8;
-    max-width: 460px;
-    margin: 0 auto 32px;
-  }
-  .btn-calendly {
-    display: inline-block;
-    padding: 15px 34px;
-    background: var(--gold);
-    color: var(--dark);
-    font-family: 'Jost', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 2px;
-    transition: background 0.3s, transform 0.2s;
-  }
-  .btn-calendly:hover { background: var(--gold-light); transform: translateY(-1px); }
-  .confirm-email { color: var(--gold); }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 28px 24px;
-    text-align: center;
-    border-top: 1px solid rgba(201,162,74,0.08);
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-  }
-  footer a { color: var(--gold); text-decoration: none; }
-  @media (max-width: 600px) {
-    .nav { padding: 20px 24px; }
-    .hero { padding: 48px 20px 36px; }
-  }
+.form-section { background: var(--dark-brown); padding: 60px 24px 80px; position: relative; }
+.form-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.25; }
+.form-container { max-width: 660px; margin: 0 auto; }
+.section-label { font-size: 10px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.form-heading { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 400; color: var(--cream); margin-bottom: 10px; }
+.form-heading em { font-style: italic; color: var(--gold-light); }
+.form-intro { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 40px; max-width: 520px; }
+.field-group { margin-bottom: 24px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 9px; }
+input[type="text"], input[type="email"], select, textarea { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(201,162,74,0.22); border-radius: 2px; padding: 13px 16px; font-family: 'Jost', sans-serif; font-size: 14px; color: var(--cream); transition: border-color 0.3s, background 0.3s; outline: none; appearance: none; }
+input::placeholder, textarea::placeholder { color: rgba(232,223,201,0.28); font-style: italic; }
+input:focus, select:focus, textarea:focus { border-color: var(--gold); background: rgba(201,162,74,0.05); }
+select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23c9a24a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+select option { background: var(--dark-brown); color: var(--cream); }
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.field-hint { font-size: 11px; color: var(--text-muted); margin-top: 7px; font-style: italic; }
+.form-separator { height: 1px; background: linear-gradient(90deg, transparent, rgba(201,162,74,0.15), transparent); margin: 30px 0; }
+.step-label { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.step-label::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold); opacity: 0.5; }
+.btn-submit { display: inline-block; width: 100%; padding: 17px 32px; background: transparent; border: 1px solid var(--gold); border-radius: 2px; font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-light); cursor: pointer; transition: background 0.3s, color 0.3s, transform 0.2s; margin-top: 10px; }
+.btn-submit:hover { background: var(--gold); color: var(--dark); transform: translateY(-1px); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.form-note { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 16px; letter-spacing: 0.05em; }
+#confirmation { display: none; text-align: center; padding: 48px 0; }
+.confirm-star { font-size: 32px; display: block; margin-bottom: 28px; opacity: 0.7; }
+.confirm-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 400; color: var(--cream); margin-bottom: 14px; line-height: 1.25; }
+.confirm-title em { font-style: italic; color: var(--gold-light); }
+.confirm-text { font-size: 14px; color: var(--text-muted); line-height: 1.8; max-width: 460px; margin: 0 auto 32px; }
+.btn-calendly { display: inline-block; padding: 15px 34px; background: var(--gold); color: var(--dark); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background 0.3s, transform 0.2s; }
+.btn-calendly:hover { background: var(--gold-light); transform: translateY(-1px); }
+.confirm-email { color: var(--gold); }
+footer { padding: 28px 24px; text-align: center; border-top: 1px solid rgba(201,162,74,0.08); font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; }
+footer a { color: var(--gold); text-decoration: none; }
+@media (max-width: 600px) { .nav { padding: 20px 24px; } .hero { padding: 48px 20px 36px; } }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
-  <a href="index.html" class="nav-back">Retour</a>
-  <a href="index.html" class="nav-logo">Samaâdi</a>
+<a href="index.html" class="nav-back">Retour</a>
+<a href="index.html" class="nav-logo">Samaâdi</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <p class="eyebrow">Ardennes belges · Janvier 2027 · Formule pilote</p>
-  <h1>La prochaine étape<br><em>commence ici.</em></h1>
-  <div class="divider"></div>
-  <p class="hero-sub">Quelques questions pour vérifier que Samaâdi est fait pour vous — et pour que nous puissions vous accompagner au mieux.</p>
+<p class="eyebrow">Ardennes belges · Janvier 2027 · Formule pilote</p>
+<h1>La prochaine étape<br><em>commence ici.</em></h1>
+<div class="divider"></div>
+<p class="hero-sub">Quelques questions pour vérifier que Samaâdi est fait pour vous — et pour que nous puissions vous accompagner au mieux.</p>
 </section>
 
-<!-- FORM -->
 <section class="form-section">
-  <div class="form-container">
-    <div id="form-block">
-      <p class="section-label">Votre profil — 5 minutes · Sans engagement</p>
-      <h2 class="form-heading">Parlez-nous<br><em>de vous et de votre livre.</em></h2>
-      <p class="form-intro">Ces quelques questions nous permettent de mieux cerner votre projet avant un premier échange. Vous recevrez ensuite une invitation à réserver un appel offert avec Claudine.</p>
+<div class="form-container">
+<div id="form-block">
+<p class="section-label">Votre profil — 5 minutes · Sans engagement</p>
+<h2 class="form-heading">Parlez-nous<br><em>de vous et de votre livre.</em></h2>
+<p class="form-intro">Ces quelques questions nous permettent de mieux cerner votre projet avant un premier échange. Vous recevrez ensuite une invitation à réserver un appel offert avec Claudine.</p>
 
-      <form id="samaadi-form" novalidate>
+<form id="samaadi-form" novalidate>
 
-        <!-- Profil -->
-        <div class="step-label">Votre profil</div>
+<div class="step-label">Votre profil</div>
 
-        <div class="field-row">
-          <div class="field-group">
-            <label for="prenom">Prénom *</label>
-            <input type="text" id="prenom" name="prenom" placeholder="Marie" required>
-          </div>
-          <div class="field-group">
-            <label for="email">Email *</label>
-            <input type="email" id="email" name="email" placeholder="marie@exemple.com" required>
-          </div>
-        </div>
+<div class="field-row">
+<div class="field-group">
+<label for="prenom">Prénom *</label>
+<input type="text" id="prenom" name="prenom" placeholder="Marie" required>
+</div>
+<div class="field-group">
+<label for="email">Email *</label>
+<input type="email" id="email" name="email" placeholder="marie@exemple.com" required>
+</div>
+</div>
 
-        <div class="field-group">
-          <label for="profil">Qui êtes-vous ? *</label>
-          <select id="profil" name="profil" required>
-            <option value="" disabled selected>Choisissez le profil qui vous correspond</option>
-            <option value="therapeute">Thérapeute, sophrologue, psychologue</option>
-            <option value="coach">Coach, mentor, accompagnant·e</option>
-            <option value="formateur">Formateur·rice, expert·e, consultant·e</option>
-            <option value="conferencier">Conférencier·ère, intervenant·e</option>
-            <option value="entrepreneur">Entrepreneur·e avec une méthode à transmettre</option>
-            <option value="autre">Autre parcours créateur</option>
-          </select>
-        </div>
+<div class="field-group">
+<label for="profil">Qui êtes-vous ? *</label>
+<select id="profil" name="profil" required>
+<option value="" disabled selected>Choisissez le profil qui vous correspond</option>
+<option value="therapeute">Thérapeute, sophrologue, psychologue</option>
+<option value="coach">Coach, mentor, accompagnant·e</option>
+<option value="formateur">Formateur·rice, expert·e, consultant·e</option>
+<option value="conferencier">Conférencier·ère, intervenant·e</option>
+<option value="entrepreneur">Entrepreneur·e avec une méthode à transmettre</option>
+<option value="autre">Autre parcours créateur</option>
+</select>
+</div>
 
-        <div class="field-group">
-          <label for="expertise">Ce que vous transmettez *</label>
-          <input type="text" id="expertise" name="expertise" placeholder="ex. gestion du stress, leadership féminin, nutrition holistique…" required>
-          <p class="field-hint">Votre domaine d'intervention, en quelques mots.</p>
-        </div>
+<div class="field-group">
+<label for="expertise">Ce que vous transmettez *</label>
+<input type="text" id="expertise" name="expertise" placeholder="ex. gestion du stress, leadership féminin, nutrition holistique…" required>
+<p class="field-hint">Votre domaine d'intervention, en quelques mots.</p>
+</div>
 
-        <div class="form-separator"></div>
+<div class="form-separator"></div>
+<div class="step-label">Votre projet de livre</div>
 
-        <!-- Projet livre -->
-        <div class="step-label">Votre projet de livre</div>
+<div class="field-group">
+<label for="projet">Décrivez votre projet *</label>
+<textarea id="projet" name="projet" placeholder="De quoi parle ce livre ? À qui s'adresse-t-il ? Quelle transformation ou message porte-t-il ?" required></textarea>
+<p class="field-hint">Quelques lignes suffisent — ce que vous avez en tête, même flou.</p>
+</div>
 
-        <div class="field-group">
-          <label for="projet">Décrivez votre projet *</label>
-          <textarea id="projet" name="projet" placeholder="De quoi parle ce livre ? À qui s'adresse-t-il ? Quelle transformation ou message porte-t-il ?" required></textarea>
-          <p class="field-hint">Quelques lignes suffisent — ce que vous avez en tête, même flou.</p>
-        </div>
+<div class="field-group">
+<label for="avancement">Où en êtes-vous ? *</label>
+<select id="avancement" name="avancement" required>
+<option value="" disabled selected>Votre point de départ</option>
+<option value="idee">J'ai l'idée en tête, rien d'écrit</option>
+<option value="notes">J'ai des notes éparses, des plans flous</option>
+<option value="debut">J'ai commencé à écrire (quelques pages ou chtres)</option>
+<option value="brouillon">J'ai un brouillon ou une première version partielle</option>
+<option value="bloque">J'ai du contenu mais je suis bloqué·e dans la structure</option>
+</select>
+</div>
 
-        <div class="field-group">
-          <label for="avancement">Où en êtes-vous ? *</label>
-          <select id="avancement" name="avancement" required>
-            <option value="" disabled selected>Votre point de départ</option>
-            <option value="idee">J'ai l'idée en tête, rien d'écrit</option>
-            <option value="notes">J'ai des notes éparses, des plans flous</option>
-            <option value="debut">J'ai commencé à écrire (quelques pages ou chtres)</option>
-            <option value="brouillon">J'ai un brouillon ou une première version partielle</option>
-            <option value="bloque">J'ai du contenu mais je suis bloqué·e dans la structure</option>
-          </select>
-        </div>
+<div class="form-separator"></div>
+<div class="step-label">Votre élan</div>
 
-        <div class="form-separator"></div>
+<div class="field-group">
+<label for="pourquoi">Pourquoi Samaâdi maintenant ? *</label>
+<textarea id="pourquoi" name="pourquoi" placeholder="Qu'est-ce qui vous freine depuis trop longtemps ? Qu'espérez-vous débloquer lors de cette immersion ?"></textarea>
+</div>
 
-        <!-- Motivation -->
-        <div class="step-label">Votre élan</div>
+<div class="field-group">
+<label for="linkedin">Profil LinkedIn (optionnel)</label>
+<input type="text" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/votre-profil">
+<p class="field-hint">Pour que Hanane puisse voir votre univers avant l'appel.</p>
+</div>
 
-        <div class="field-group">
-          <label for="pourquoi">Pourquoi Samaâdi maintenant ? *</label>
-          <textarea id="pourquoi" name="pourquoi" placeholder="Qu'est-ce qui vous freine depuis trop longtemps ? Qu'espérez-vous débloquer lors de cette immersion ?"></textarea>
-        </div>
+<button type="submit" class="btn-submit" id="submit-btn">Rejoindre la liste d'intérêt</button>
+<p class="form-note">Appel de qualification offert avec Claudine · Sans engagement</p>
 
-        <div class="field-group">
-          <label for="linkedin">Profil LinkedIn (optionnel)</label>
-          <input type="text" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/votre-profil">
-          <p class="field-hint">Pour que Hanane puisse voir votre univers avant l'appel.</p>
-        </div>
+</form>
 
-        <button type="submit" class="btn-submit" id="submit-btn">Rejoindre la liste d'intérêt</button>
-        <p class="form-note">Appel de qualification offert avec Claudine · Sans engagement</p>
-
-      </form>
-
-      <!-- CONFIRMATION -->
-      <div id="confirmation">
-        <span class="confirm-star">✦</span>
-        <h2 class="confirm-title">Votre profil<br><em>a bien été transmis.</em></h2>
-        <p class="confirm-text">
-          Merci. Nous lisons chaque candidature avec attention.<br><br>
-          En rejoignant la liste, vous recevez en priorité les invitations aux webinaires, les dates du pilote et l'ouverture des candidatures.<br><br>
-          Un email de confirmation vous a été envoyé à <span id="confirm-email" class="confirm-email"></span>.<br>
-          Pour aller plus loin dès maintenant, réservez un premier échange offert avec Claudine.
-        </p>
-        <a href="https://calendly.com/claudine-defeuillet/30min" target="_blank" class="btn-calendly">Réserver mon échange avec Claudine</a>
-        <div style="margin-top:28px;">
-          <a href="index.html" style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); text-decoration:none;">← Retour à la page principale</a>
-        </div>
-      </div>
-    </div>
-  </div>
+<div id="confirmation">
+<span class="confirm-star">✦</span>
+<h2 class="confirm-title">Votre profil<br><em>a bien été transmis.</em></h2>
+<p class="confirm-text">
+Merci. Nous lisons chaque candidature avec attention.<br><br>
+En rejoignant la liste, vous recevez en priorité les invitations aux webinaires, les dates du pilote et l'ouverture des candidatures.<br><br>
+Un email de confirmation vous a été envoyé à <span id="confirm-email" class="confirm-email"></span>.<br>
+Pour aller plus loin dès maintenant, réservez un premier échange offert avec Claudine.
+</p>
+<a href="https://calendly.com/claudine-defeuillet/30min" target="_blank" class="btn-calendly">Réserver mon échange avec Claudine</a>
+<div style="margin-top:28px;">
+<a href="index.html" style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); text-decoration:none;">← Retour à la page principale</a>
+</div>
+</div>
+</div>
+</div>
 </section>
 
 <footer>
-  Voyage autour de l'écriture &middot;
-  <a href="https://coco-and-co.com" target="_blank">Claudine Defeuillet</a> &times;
-  <a href="https://websait.com" target="_blank">Hanane Risayindi</a> &times; Samaâdi
+Voyage autour de l'écriture &middot;
+<a href="https://coco-and-co.com" target="_blank">Claudine Defeuillet</a> &times;
+<a href="https://websait.com" target="_blank">Hanane Risayindi</a> &times; Samaâdi
 </footer>
 
 <script>
 // ── CONFIG ──
-const SYSTEME_IO_TAG_ID  = '2285193';  // ID du tag "Liste attente Samaâdi" dans Systeme.io
+const SYSTEME_IO_TAG_ID = '2285193';
 
 document.getElementById('samaadi-form').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -448,7 +214,6 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
     linkedin:   document.getElementById('linkedin').value.trim(),
   };
 
-  // Validation
   const required = ['prenom','email','profil','expertise','projet','avancement'];
   const missing = required.filter(k => !data[k]);
   if (missing.length) {
@@ -468,39 +233,26 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
   btn.textContent = 'Envoi en cours…';
   btn.disabled = true;
 
-  // ── 1. Systeme.io via proxy serverless (évite CORS) ──────────
+  // ── Systeme.io via proxy serverless (évite CORS) ──
   try {
-    const allFields = [
-      { slug: 'profil',     value: data.profil },
-      { slug: 'expertise',  value: data.expertise },
-      { slug: 'projet',     value: data.projet },
-      { slug: 'avancement', value: data.avancement },
-      { slug: 'pourquoi',   value: data.pourquoi },
-      { slug: 'linkedin',   value: data.linkedin },
-    ];
     const payload = {
-      email: data.email,
-      firstName: data.prenom,
-      tagIds: [parseInt(SYSTEME_IO_TAG_ID)],
+      email:       data.email,
+      firstName:   data.prenom,
+      tagIds:      [parseInt(SYSTEME_IO_TAG_ID)],
       campaignIds: [1232061],
-      fields: allFields.filter(f => f.value && f.value.trim() !== ''),
     };
     await fetch('/api/submit', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
   } catch (err) {
     console.warn('Systeme.io:', err);
   }
 
-  // ── 2. Afficher la confirmation ────────────────────────────
   document.getElementById('samaadi-form').style.display = 'none';
   document.getElementById('confirmation').style.display  = 'block';
   document.getElementById('confirm-email').textContent   = data.email;
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
