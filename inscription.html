@@ -326,7 +326,9 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
   document.getElementById('samaadi-form').style.display = 'none';
   document.getElementById('confirmation').style.display  = 'block';
   document.getElementById('confirm-email').textContent   = data.email;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  requestAnimationFrame(() => {
+    document.getElementById('confirmation').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 });
 </script>
 
