@@ -25,7 +25,6 @@ export default async function handler(req, res) {
   let contactId = null;
 
   try {
-    // 1. Créer ou mettre à jour le contact
     const createRes = await fetch('https://api.systeme.io/api/contacts', {
       method: 'POST',
       headers: sysioHeaders,
@@ -34,11 +33,12 @@ export default async function handler(req, res) {
     const createData = await createRes.json();
 
     if (!createRes.ok) {
+      console.error('[submit] Systeme.io error', createRes.status, JSON.stringify(createData));
+      console.error('[submit] Payload sent:', JSON.stringify(contactPayload));
       return res.status(createRes.status).json({ error: 'Systeme.io create failed', detail: createData });
     }
     contactId = createData.id;
 
-    // 2. Ajouter les tags
     for (const tagId of tagIds) {
       await fetch('https://api.systeme.io/api/contacts/' + contactId + '/tags', {
         method: 'POST',
@@ -47,7 +47,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // 3. Ajouter aux campagnes email
     for (const campaignId of campaignIds) {
       await fetch('https://api.systeme.io/api/contacts/' + contactId + '/email_marketing_campaigns', {
         method: 'POST',
@@ -56,7 +55,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // 4. Notification email via SMTP OVH
     const EMAIL_USER = process.env.EMAIL_USER;
     const EMAIL_PASS = process.env.EMAIL_PASS;
     if (EMAIL_USER && EMAIL_PASS && contactPayload.email) {
@@ -91,7 +89,7 @@ export default async function handler(req, res) {
         + '<div style="max-width:580px;margin:0 auto;background:#fff;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">'
         + '<div style="background:#2a1a08;padding:24px 32px;"><p style="margin:0;color:#c9a24a;font-size:11px;letter-spacing:.2em;text-transform:uppercase;">Samaâdi · Nouvelle inscription</p></div>'
         + '<div style="padding:24px 32px;"><table style="width:100%;border-collapse:collapse;">' + tableRows + '</table>'
-        + '<p style="margin-top:16px;font-size:11px;color:#9e8a6e;">Systeme.io ID : ' + (contactId || 'inconnu') + '</p></div>'
+        + '<p style="margin-top:16px;font-size:11px;color:#9e8a6e;">Systeme.io ID : ' + (contactId || 'inconnu') + '</p></div>'
         + '</div></body></html>';
 
       await transporter.sendMail({
