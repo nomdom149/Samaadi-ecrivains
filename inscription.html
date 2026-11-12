@@ -4,7 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rejoindre la liste d'intérêt — Samaâdi</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/playfair-display-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 400; font-display: swap; src: url('/fonts/playfair-display-400-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/playfair-display-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 500; font-display: swap; src: url('/fonts/playfair-display-500-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/playfair-display-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 700; font-display: swap; src: url('/fonts/playfair-display-700-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 300; font-display: swap; src: url('/fonts/jost-300-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/jost-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/jost-500-normal.woff2') format('woff2'); }
+</style>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -74,6 +84,12 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .confirm-email { color: var(--gold); }
 footer { padding: 28px 24px; text-align: center; border-top: 1px solid rgba(201,162,74,0.08); font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; }
 footer a { color: var(--gold); text-decoration: none; }
+
+.consent-group { margin-top: 20px; margin-bottom: 6px; }
+.consent-label { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+.consent-checkbox { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; accent-color: var(--gold); cursor: pointer; }
+.consent-link { color: var(--gold); text-decoration: underline; }
+.consent-label span { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
 @media (max-width: 600px) { .nav { padding: 20px 24px; } .hero { padding: 48px 20px 36px; } }
 </style>
 </head>
@@ -167,6 +183,12 @@ footer a { color: var(--gold); text-decoration: none; }
 <p class="field-hint">Pour que Hanane puisse voir votre univers avant l'appel.</p>
 </div>
 
+<div class="field-group consent-group">
+  <label class="consent-label" for="rgpd">
+    <input type="checkbox" id="rgpd" name="rgpd" class="consent-checkbox">
+    <span>J'ai lu et j'accepte la <a href="confidentialite.html" target="_blank" class="consent-link">politique de confidentialité</a>. Mes données seront utilisées uniquement pour me tenir informé·e du projet Samaâdi et m'inviter à des événements associés. <span style="color:var(--gold);">*</span></span>
+  </label>
+</div>
 <button type="submit" class="btn-submit" id="submit-btn">Rejoindre la liste d'intérêt</button>
 <p class="form-note">Appel de qualification offert avec Claudine · Sans engagement</p>
 
@@ -234,6 +256,16 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
     linkedin:   document.getElementById('linkedin').value.trim(),
   };
 
+  // Vérification consentement RGPD
+  if (!document.getElementById('rgpd').checked) {
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = "Merci d'accepter la politique de confidentialité ✦";
+    btn.style.borderColor = '#c0392b';
+    btn.style.color = '#c0392b';
+    setTimeout(() => { btn.textContent = "Rejoindre la liste d'intérêt"; btn.style.borderColor = ''; btn.style.color = ''; }, 3000);
+    return;
+  }
+
   const required = ['prenom','email','profil','expertise','projet','avancement'];
   const missing = required.filter(k => !data[k]);
   if (missing.length) {
@@ -254,8 +286,6 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
   btn.disabled = true;
 
   // ── Champs personnalisés Systeme.io ──
-  // Ces slugs doivent correspondre exactement aux champs créés dans votre
-  // espace Systeme.io → Contacts → Champs personnalisés
   const customFields = [
     { slug: 'profil',        value: PROFIL_LABELS[data.profil] || data.profil },
     { slug: 'expertise',     value: data.expertise },
@@ -263,13 +293,13 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
     { slug: 'avancement',    value: AVANCEMENT_LABELS[data.avancement] || data.avancement },
     { slug: 'motivation',    value: data.pourquoi },
     { slug: 'linkedin',      value: data.linkedin },
-  ].filter(f => f.value); // on n'envoie que les champs remplis
+  ].filter(f => f.value);
 
   // ── Envoi via proxy serverless (évite CORS) ──
   try {
     const payload = {
       email:       data.email,
-      firstName:   data.prenom,   // le proxy renomme en first_name pour Systeme.io
+      firstName:   data.prenom,
       fields:      customFields,
       tagIds:      [parseInt(SYSTEME_IO_TAG_ID)],
       campaignIds: [1232061],
