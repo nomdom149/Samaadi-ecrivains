@@ -304,13 +304,20 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
       tagIds:      [parseInt(SYSTEME_IO_TAG_ID)],
       campaignIds: [1232061],
     };
-    await fetch('/api/submit', {
+    const response = await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      console.error('Erreur API:', response.status, errData);
+      throw new Error('Erreur serveur ' + response.status);
+    }
   } catch (err) {
-    console.warn('Systeme.io:', err);
+    console.error('Systeme.io:', err);
+    alert("Une erreur s'est produite lors de l'envoi. Veuillez réessayer ou nous contacter directement.");
+    return;
   }
 
   document.getElementById('samaadi-form').style.display = 'none';
