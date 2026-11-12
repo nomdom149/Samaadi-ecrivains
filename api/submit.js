@@ -86,8 +86,10 @@ export default async function handler(req, res) {
           const verified = await verifyRes.json();
           console.log('[submit] First name verification', {
             status: verifyRes.status,
-            hasFirstName: Boolean(verified.firstName || verified.first_name),
-            availableNameKeys: Object.keys(verified).filter(k => /name/i.test(k)),
+            hasFirstName: Boolean(verified.firstName || verified.first_name || (Array.isArray(verified.fields) && verified.fields.some(f => /^(first_name|firstName)$/i.test(f.slug || '') && Boolean(f.value)))),
+            responseKeys: Object.keys(verified),
+            fieldSlugs: Array.isArray(verified.fields) ? verified.fields.map(f => f.slug).filter(Boolean) : [],
+            nestedContactKeys: verified.contact && typeof verified.contact === 'object' ? Object.keys(verified.contact) : [],
           });
         } else {
           console.warn('[submit] First name verification unavailable', { status: verifyRes.status });
