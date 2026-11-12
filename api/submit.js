@@ -33,11 +33,36 @@ export default async function handler(req, res) {
     const createData = await createRes.json();
 
     if (!createRes.ok) {
-      console.error('[submit] Systeme.io error', createRes.status, JSON.stringify(createData));
-      console.error('[submit] Payload sent:', JSON.stringify(contactPayload));
-      return res.status(createRes.status).json({ error: 'Systeme.io create failed', detail: createData });
+      // Si l'email existe déjà, on cherche et met à jour le contact existant
+      const isAlreadyUsed = JSON.stringify(createData).includes('déjà utilisée') || JSON.stringify(createData).includes('already used');
+      if (createRes.status === 422 && isAlreadyUsed) {
+        const searchRes = await fetch('https://api.systeme.io/api/contacts?email=' + encodeURIComponent(contactPayload.email), {
+          headers: sysioHeaders,
+        });
+        if (searchRes.ok) {
+          const searchData = await searchRes.json();
+          if (searchData.items && searchData.items.length > 0) {
+            const existingId = searchData.items[0].id;
+            const patchRes = await fetch('https://api.systeme.io/api/contacts/' + existingId, {
+              method: 'PATCH',
+              headers: sysioHeaders,
+              body: JSON.stringify(contactPayload),
+            });
+            if (patchRes.ok) {
+              const patchData = await patchRes.json();
+              contactId = existingId;
+            }
+          }
+        }
+      }
+      if (!contactId) {
+        console.error('[submit] Systeme.io error', createRes.status, JSON.stringify(createData));
+        console.error('[submit] Payload sent:', JSON.stringify(contactPayload));
+        return res.status(createRes.status).json({ error: 'Systeme.io create failed', detail: createData });
+      }
+    } else {
+      contactId = createData.id;
     }
-    contactId = createData.id;
 
     for (const tagId of tagIds) {
       await fetch('https://api.systeme.io/api/contacts/' + contactId + '/tags', {
