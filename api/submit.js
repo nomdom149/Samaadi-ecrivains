@@ -10,11 +10,17 @@ export default async function handler(req, res) {
 
   const sysioHeaders = { 'Content-Type': 'application/json', 'X-API-Key': API_KEY };
 
-  // Extract tagIds + campaignIds separately (Systeme.io ignores them during creation)
-  const { tagIds = [], campaignIds = [], ...contactPayload } = req.body;
+  // Extract meta-champs séparés du payload contact
+  const { tagIds = [], campaignIds = [], firstName, ...rest } = req.body;
+
+  // Systeme.io utilise first_name (snake_case)
+  const contactPayload = {
+    ...rest,
+    ...(firstName ? { first_name: firstName } : {}),
+  };
 
   try {
-    // ── Étape 1 : créer le contact ──
+    // ── Étape 1 : créer ou mettre à jour le contact ──
     const createResp = await fetch('https://api.systeme.io/api/contacts', {
       method: 'POST',
       headers: sysioHeaders,
@@ -24,7 +30,7 @@ export default async function handler(req, res) {
 
     let contactId = createData.id || null;
 
-    // Doublon d'email : contact déjà présent → on récupère son ID pour tagger
+    // Doublon d'email : on récupère l'ID existant pour tagger
     if (createResp.status === 422) {
       const violations = createData.violations || [];
       const onlyEmailDup = violations.length > 0 && violations.every(
@@ -46,7 +52,7 @@ export default async function handler(req, res) {
       return res.status(createResp.status).json(createData);
     }
 
-    // ── Étape 2 : attacher les tags (appel séparé obligatoire) ──
+    // ── Étape 2 : attacher les tags ──
     if (contactId && tagIds.length > 0) {
       for (const tagId of tagIds) {
         await fetch(`https://api.systeme.io/api/contacts/${contactId}/tags`, {
@@ -57,7 +63,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // ── Étape 3 : inscrire aux campagnes (appel séparé obligatoire) ──
+    // ── Étape 3 : inscrire aux campagnes ──
     if (contactId && campaignIds.length > 0) {
       for (const campaignId of campaignIds) {
         await fetch(`https://api.systeme.io/api/campaigns/${campaignId}/contacts`, {
