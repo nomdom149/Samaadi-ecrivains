@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rejoindre la liste d’intérêt — Samaâdi</title>
+<title>Rejoindre la liste d'intérêt — Samaâdi</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -201,6 +201,25 @@ Voyage autour de l'écriture &middot;
 // ── CONFIG ──
 const SYSTEME_IO_TAG_ID = '2285193';
 
+// Mapping des valeurs du select "profil" vers un label lisible
+const PROFIL_LABELS = {
+  therapeute:   'Thérapeute / Sophrologue / Psychologue',
+  coach:        'Coach / Mentor / Accompagnant·e',
+  formateur:    'Formateur·rice / Expert·e / Consultant·e',
+  conferencier: 'Conférencier·ère / Intervenant·e',
+  entrepreneur: 'Entrepreneur·e avec une méthode à transmettre',
+  autre:        'Autre parcours créateur',
+};
+
+// Mapping des valeurs du select "avancement" vers un label lisible
+const AVANCEMENT_LABELS = {
+  idee:      "Idée en tête, rien d'écrit",
+  notes:     "Notes éparses / plans flous",
+  debut:     "Début d'écriture (quelques pages)",
+  brouillon: "Brouillon ou première version partielle",
+  bloque:    "Contenu existant, bloqué·e dans la structure",
+};
+
 document.getElementById('samaadi-form').addEventListener('submit', async function(e) {
   e.preventDefault();
 
@@ -234,11 +253,24 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
   btn.textContent = 'Envoi en cours…';
   btn.disabled = true;
 
-  // ── Systeme.io via proxy serverless (évite CORS) ──
+  // ── Champs personnalisés Systeme.io ──
+  // Ces slugs doivent correspondre exactement aux champs créés dans votre
+  // espace Systeme.io → Contacts → Champs personnalisés
+  const customFields = [
+    { slug: 'profil',        value: PROFIL_LABELS[data.profil] || data.profil },
+    { slug: 'expertise',     value: data.expertise },
+    { slug: 'projet-livre',  value: data.projet },
+    { slug: 'avancement',    value: AVANCEMENT_LABELS[data.avancement] || data.avancement },
+    { slug: 'motivation',    value: data.pourquoi },
+    { slug: 'linkedin',      value: data.linkedin },
+  ].filter(f => f.value); // on n'envoie que les champs remplis
+
+  // ── Envoi via proxy serverless (évite CORS) ──
   try {
     const payload = {
       email:       data.email,
-      firstName:   data.prenom,
+      firstName:   data.prenom,   // le proxy renomme en first_name pour Systeme.io
+      fields:      customFields,
       tagIds:      [parseInt(SYSTEME_IO_TAG_ID)],
       campaignIds: [1232061],
     };
