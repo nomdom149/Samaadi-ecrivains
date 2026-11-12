@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   const { tagIds = [], campaignIds = [], firstName, fields = [], profil = '', ...rest } = req.body;
   const contactPayload = {
     ...rest,
-    ...(firstName ? { firstName } : {}),
+    ...(firstName ? { first_name: firstName } : {}),
     ...(fields.length > 0 ? { fields } : {}),
   };
 
