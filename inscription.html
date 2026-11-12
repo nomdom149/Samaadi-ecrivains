@@ -303,7 +303,7 @@ document.getElementById('samaadi-form').addEventListener('submit', async functio
       profil:      PROFIL_LABELS[data.profil] || data.profil,
       fields:      customFields,
       tagIds:      [parseInt(SYSTEME_IO_TAG_ID)],
-      campaignIds: [1232061],
+
     };
     const response = await fetch('/api/submit', {
       method: 'POST',
