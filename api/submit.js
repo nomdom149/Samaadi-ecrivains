@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   const { tagIds = [], campaignIds = [], firstName, fields = [], profil = '', ...rest } = req.body;
   const contactPayload = {
     ...rest,
-    ...(firstName ? { first_name: firstName } : {}),
+    ...(firstName ? { firstName } : {}),
     ...(fields.length > 0 ? { fields } : {}),
   };
 
@@ -29,6 +29,10 @@ export default async function handler(req, res) {
     const searchRes = await fetch('https://api.systeme.io/api/contacts?email=' + encodeURIComponent(contactPayload.email), {
       headers: sysioHeaders,
     });
+    if (!searchRes.ok) {
+      console.error('[submit] Contact lookup failed:', searchRes.status);
+      return res.status(502).json({ error: 'Contact lookup failed' });
+    }
     const searchData = await searchRes.json();
 
     if (searchRes.ok && searchData.items && searchData.items.length > 0) {
@@ -40,7 +44,7 @@ export default async function handler(req, res) {
 
       const patchRes = await fetch('https://api.systeme.io/api/contacts/' + existingId, {
         method: 'PATCH',
-        headers: sysioHeaders,
+        headers: { ...sysioHeaders, 'Content-Type': 'application/merge-patch+json' },
         body: JSON.stringify(patchPayload),
       });
 
@@ -50,7 +54,7 @@ export default async function handler(req, res) {
       } else {
         const patchData = await patchRes.json();
         console.error('[submit] Erreur PATCH', patchRes.status, JSON.stringify(patchData));
-        return res.status(patchRes.status).json({ error: 'Systeme.io update failed', detail: patchData });
+        return res.status(502).json({ error: 'Systeme.io update failed', upstreamStatus: patchRes.status });
       }
 
     } else {
@@ -65,8 +69,8 @@ export default async function handler(req, res) {
 
       if (!createRes.ok) {
         console.error('[submit] Erreur POST', createRes.status, JSON.stringify(createData));
-        console.error('[submit] Payload:', JSON.stringify(contactPayload));
-        return res.status(createRes.status).json({ error: 'Systeme.io create failed', detail: createData });
+        // Avoid logging personal data.
+        return res.status(502).json({ error: 'Systeme.io create failed', upstreamStatus: createRes.status });
       }
       contactId = createData.id;
       console.log('[submit] Contact créé:', contactId);
@@ -140,6 +144,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('[submit] Exception:', error.message);
-    return res.status(500).json({ error: 'API call failed', detail: error.message });
+    return res.status(500).json({ error: 'API call failed' });
   }
 }
