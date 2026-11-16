@@ -1,18 +1,3 @@
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Node
 node_modules/
-npm-debug.log*
-
-# Editeurs
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Fichiers système
-Thumbs.db
-desktop.ini
+package.json
+package-lock.json

@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /acces-prive/
-Disallow: /reservation/
-
-Sitemap: https://samaadi.be/sitemap.xml
